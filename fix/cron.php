@@ -4,15 +4,15 @@ require(__DIR__ . '/../../../config.php');
 
 defined('MOODLE_INTERNAL') || die;
 
-resetErrorTasks();
-clearLock();
+print_r(resetErrorTasks());
+// clearLock();
 
-for ($i = 0; $i < 10; $i++) {
-    execCron('php /var/www/html/admin/cli/scheduled_task.php --execute="tool_objectfs\task\push_objects_to_storage"');
-    clearLock();
-    execCron('php /var/www/html/admin/cli/scheduled_task.php --execute="tool_objectfs\task\delete_local_objects"');
-    clearLock();
-}
+// for ($i = 0; $i < 10; $i++) {
+//     execCron('php /var/www/html/admin/cli/scheduled_task.php --execute="tool_objectfs\task\push_objects_to_storage"');
+//     clearLock();
+//     execCron('php /var/www/html/admin/cli/scheduled_task.php --execute="tool_objectfs\task\delete_local_objects"');
+//     clearLock();
+// }
 
 function resetErrorTasks()
 {
