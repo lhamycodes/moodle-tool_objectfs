@@ -20,9 +20,7 @@ function resetErrorTasks()
 {
     global $DB;
 
-    return $DB;
-
-    $reset = $DB->get_record_sql("UPDATE {mdl_tool_objectfs_objects} SET location=0 WHERE location=-1;");
+    $reset = $DB->execute("UPDATE {mdl_tool_objectfs_objects} SET location=0 WHERE location=-1;");
 
     return $reset;
 }
@@ -31,9 +29,13 @@ function clearLock()
 {
     global $DB;
 
-    $clear = $DB->get_record_sql("DELETE FROM {mdl_lock_db} WHERE resourcekey LIKE '%adhoc%task%%';DELETE FROM {mdl_lock_db} WHERE resourcekey LIKE '%schedule%runner%';UPDATE  {mdl_lock_db} SET owner=NULL where expires IS NOT NULL AND resourcekey like '%objectfs%';");
+    $releaseAdhoc = $DB->execute("DELETE FROM {mdl_lock_db} WHERE resourcekey LIKE '%adhoc%task%%';");
+    $releaseScheduleRunner = $DB->execute("DELETE FROM {mdl_lock_db} WHERE resourcekey LIKE '%schedule%runner%';");
+    $releaseResources = $DB->execute("UPDATE  {mdl_lock_db} SET owner=NULL where expires IS NOT NULL AND resourcekey like '%objectfs%';");
 
-    return $clear;
+    // $clear = $DB->get_record_sql("DELETE FROM {mdl_lock_db} WHERE resourcekey LIKE '%adhoc%task%%';DELETE FROM {mdl_lock_db} WHERE resourcekey LIKE '%schedule%runner%';UPDATE  {mdl_lock_db} SET owner=NULL where expires IS NOT NULL AND resourcekey like '%objectfs%';");
+
+    return [$releaseAdhoc, $releaseScheduleRunner, $releaseResources];
 }
 
 function execCron($cron)
