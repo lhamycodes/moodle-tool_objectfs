@@ -20,6 +20,8 @@ function resetErrorTasks()
 {
     global $DB;
 
+    return $DB;
+
     $reset = $DB->get_record_sql("UPDATE {mdl_tool_objectfs_objects} SET location=0 WHERE location=-1;");
 
     return $reset;
