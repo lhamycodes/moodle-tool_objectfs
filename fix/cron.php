@@ -10,6 +10,7 @@ resetErrorTasks();
 clearLock();
 
 for ($i = 0; $i < 10; $i++) {
+    print_r("Running MAGIC");
     execCron('php /var/www/html/admin/cli/scheduled_task.php --execute="tool_objectfs\task\push_objects_to_storage"');
     clearLock();
     execCron('php /var/www/html/admin/cli/scheduled_task.php --execute="tool_objectfs\task\delete_local_objects"');
@@ -22,6 +23,7 @@ function resetErrorTasks()
 {
     global $DB;
 
+    print_r("Resetting error files");
     $reset = $DB->execute("UPDATE {tool_objectfs_objects} too SET location=0 WHERE location=-1");
 
     return $reset;
@@ -42,6 +44,8 @@ function fetchErrorFiles()
 {
     global $DB;
 
+    print_r("Fetching error files");
+
     $count = $DB->count_records("tool_objectfs_objects", array("location" => -1));
 
     return $count;
@@ -49,5 +53,6 @@ function fetchErrorFiles()
 
 function execCron($cron)
 {
+    print_r("Executing cron $cron");
     return shell_exec($cron);
 }
