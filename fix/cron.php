@@ -11,7 +11,7 @@ print_r("Error files before : " . fetchErrorFiles() . "\n");
 resetErrorTasks();
 clearLock();
 
-for ($i = 0; $i < 4; $i++) {
+for ($i = 0; $i < 10; $i++) {
     print_r("Running MAGIC\n");
 
     execCron('php /var/www/html/admin/cli/scheduled_task.php --execute="tool_objectfs\task\push_objects_to_storage"');
